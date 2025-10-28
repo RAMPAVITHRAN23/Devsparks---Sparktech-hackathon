@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DEVSPARKS — Futuristic Hackathon 2025</title>
+    <meta name="description"
+        content="DEVSPARKS 2025 — 6 hour online hackathon. Build, deploy, win — free Zoho course trial for winners." />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg-1: #050816;
+            --bg-2: #08102a;
+            --accent-1: #7c3aed;
+            --accent-2: #06b6d4;
+            --accent-3: #ff0066;
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            font-family: Poppins, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+            background: linear-gradient(180deg, var(--bg-1), var(--bg-2));
+            color: #e6eef8;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        /* animated gradient text */
+        .gradient-text {
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-2), var(--accent-3));
+            -webkit-background-clip: text;
+            color: transparent;
+            background-size: 300% 300%;
+            animation: grad 6s linear infinite
+        }
+
+        @keyframes grad {
+            0% {
+                background-position: 0% 50%
+            }
+
+            50% {
+                background-position: 100% 50%
+            }
+
+            100% {
+                background-position: 0% 50%
+            }
+        }
+
+        /* glowing cards */
+        .neon {
+            box-shadow: 0 8px 30px rgba(7, 7, 25, 0.6), 0 0 40px rgba(124, 58, 237, 0.08);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.015));
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        /* floating CTA */
+        .float-cta {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            z-index: 60;
+            border-radius: 999px;
+            padding: 14px 22px;
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.14);
+            transform: translateY(0);
+            transition: transform .18s ease
+        }
+
+        .float-cta:hover {
+            transform: translateY(-6px)
+        }
+
+        /* subtle animated blobs */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(65px);
+            opacity: .6;
+            mix-blend-mode: screen
+        }
+
+        .blob.one {
+            width: 420px;
+            height: 420px;
+            left: -80px;
+            top: -120px;
+            background: radial-gradient(circle at 30% 30%, #7c3aed, #06b6d4)
+        }
+
+        .blob.two {
+            width: 360px;
+            height: 360px;
+            right: -60px;
+            bottom: -120px;
+            background: radial-gradient(circle at 70% 70%, #ff0066, #ff9f43)
+        }
+
+        /* particles canvas */
+        #particle-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none
+        }
+
+        /* small utilities */
+        .glass {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(6px)
+        }
+
+        /* animations */
+        .float-up {
+            animation: floatUp 4s ease-in-out infinite
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(-12px)
+            }
+
+            100% {
+                transform: translateY(0)
+            }
+        }
+
+        /* responsive tweaks */
+        @media (max-width:768px) {
+            .blob.one {
+                display: none
+            }
+
+            .blob.two {
+                display: none
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="particle-canvas"></canvas>
+    <div class="blob one" aria-hidden></div>
+    <div class="blob two" aria-hidden></div>
+
+    <!-- NAV -->
+    <header class="relative z-30">
+        <div class="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-20 h20 rounded-full bg-white/5 flex items-center justify-center ring-1 ring-white/5">
+                    <img src="https://ik.imagekit.io/Rogerzram/IEEE%20YESISST%2012/image-removebg-preview.png?updatedAt=1761626511845   "
+                        class="w-120 h-160 md:w-20 md:h-20 object-contain" />
+                </div>
+                <div>
+                    <div class="text-sm text-slate-200 opacity-80">DEVSPARKS</div>
+                    <div class="text-xs text-slate-400">6 Hrs Online Hackathon</div>
+                </div>
+            </div>
+            <nav class="hidden md:flex items-center gap-6 text-sm text-slate-300">
+                <a href="#about" class="hover:text-white">About</a>
+                <a href="#rules" class="hover:text-white">Rules</a>
+                <a href="#prizes" class="hover:text-white">Prizes</a>
+                <a href="#winners" class="hover:text-white">Winners</a>
+                <a href="#register"
+                    class="px-4 py-2 rounded-full bg-gradient-to-r from-indigo-600 to-cyan-400 text-black font-semibold shadow">Register</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <main class="relative z-20">
+        <section class="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center">
+            <div class="space-y-6">
+                <h1 class="text-5xl md:text-6xl font-extrabold leading-tight gradient-text">Build. Deploy. Win —
+                    DEVSPARKS 2025</h1>
+                <p class="text-slate-200/90 text-lg max-w-xl">A futuristic 6-hour online hackathon for students. Ship a
+                    full-stack website, push to GitHub, deploy publicly and compete for cash prizes, internships and
+                    exclusive Zoho course trials for top performers.</p>
+
+                <div class="flex flex-wrap gap-4 items-center">
+                    <a href="#register"
+                        class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-indigo-600 to-cyan-400 text-black font-bold shadow-lg">Register
+                        Now</a>
+                    <a href="#about" class="text-sm text-slate-300 hover:underline">See Guidelines</a>
+                </div>
+
+                <div class="mt-6 grid grid-cols-2 gap-4 max-w-md">
+                    <div class="p-4 glass neon rounded-lg">
+                        <div class="text-xs text-slate-300">Date</div>
+                        <div class="font-semibold text-white">08 Nov 2025</div>
+                    </div>
+                    <div class="p-4 glass neon rounded-lg">
+                        <div class="text-xs text-slate-300">Time</div>
+                        <div class="font-semibold text-white">09:00 AM — 06:00 PM</div>
+                    </div>
+                    <div class="p-4 glass neon rounded-lg">
+                        <div class="text-xs text-slate-300">Team Size</div>
+                        <div class="font-semibold text-white">2 — 4</div>
+                    </div>
+                    <div class="p-4 glass neon rounded-lg">
+                        <div class="text-xs text-slate-300">Fee</div>
+                        <div class="font-semibold text-white">₹200 / team</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="relative">
+                <div class="w-full h-full bg-gradient-to-br from-white/5 to-white/3 rounded-3xl p-6 neon shadow-xl">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="text-xs text-slate-300">Countdown to kickoff</div>
+                            <div id="countdown" class="mt-2 text-4xl font-extrabold">-- : -- : -- : --</div>
+                            <div class="text-sm text-slate-400 mt-2">Days &nbsp; Hours &nbsp; Minutes &nbsp; Seconds
+                            </div>
+                        </div>
+                        <div
+                            class="w-28 h-28 bg-gradient-to-tr from-indigo-500 to-cyan-400 rounded-xl flex items-center justify-center">
+                            <img src="https://cdn-icons-png.flaticon.com/512/2583/2583391.png" class="w-16 h-16" />
+                        </div>
+                    </div>
+
+                    <div class="mt-6 grid grid-cols-1 gap-3">
+                        <div class="p-3 bg-white/5 rounded-lg flex items-center justify-between">
+                            <div>
+                                <div class="text-xs text-slate-300">Prize Pool</div>
+                                <div class="font-semibold text-white">₹5,000+</div>
+                            </div>
+                            <div class="text-xs text-slate-300">Internships & Certificates</div>
+                        </div>
+
+                        <div class="p-3 bg-white/3 rounded-lg flex items-center justify-between">
+                            <div>
+                                <div class="text-xs text-slate-300">Special Reward</div>
+                                <div class="font-semibold text-white">Free Zoho Course Trial</div>
+                            </div>
+                            <div class="text-xs text-slate-300">For Winners & Best Participants</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div
+                    class="absolute -right-8 -bottom-8 w-40 h-40 rounded-xl bg-gradient-to-br from-pink-500 to-yellow-400 opacity-30 blur-2xl">
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section id="about" class="max-w-6xl mx-auto px-6 py-12">
+            <div class="grid md:grid-cols-2 gap-10 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold mb-4">What you'll build</h2>
+                    <p class="text-slate-300 mb-4">Teams must deliver a public, fully functional full-stack website
+                        (frontend + backend + DB + deployment). Use GitHub for source control and submit a demo video or
+                        demo link.</p>
+
+                    <ul class="text-slate-300 space-y-3">
+                        <li>• Real deployment: Vercel / Render / Railway / Firebase / Heroku</li>
+                        <li>• Use of modern frameworks encouraged (React, Next.js, Node, Express, Django, Flask, etc.)
+                        </li>
+                        <li>• AI-assisted code is allowed — acknowledge tools used in README</li>
+                    </ul>
+                </div>
+                <div class="p-6 neon rounded-2xl glass shadow-lg">
+                    <h3 class="font-semibold mb-2">Mentors & Support</h3>
+                    <p class="text-slate-300 text-sm">Mentors will be available during the event to help with
+                        architecture, deployment, and debugging. We also provide quick tutorials on Git & deployment at
+                        the start.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- RULES -->
+        <section id="rules" class="max-w-6xl mx-auto px-6 py-12">
+            <h3 class="text-2xl font-bold mb-6">Rules & Judging</h3>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="p-5 neon rounded-lg glass">
+                    <h4 class="font-semibold mb-2">Submission</h4>
+                    <ul class="text-slate-300 text-sm space-y-2">
+                        <li>• Push final code before 05:30 PM on event day</li>
+                        <li>• Share public GitHub repo with README + demo link</li>
+                        <li>• Demo can be live or recorded screen video</li>
+                    </ul>
+                </div>
+                <div class="p-5 neon rounded-lg glass">
+                    <h4 class="font-semibold mb-2">Tech</h4>
+                    <ul class="text-slate-300 text-sm space-y-2">
+                        <li>• Any modern stack allowed</li>
+                        <li>• Separate frontend + backend + persistent data layer</li>
+                        <li>• Deployment must be public</li>
+                    </ul>
+                </div>
+                <div class="p-5 neon rounded-lg glass">
+                    <h4 class="font-semibold mb-2">Judging</h4>
+                    <ol class="text-slate-300 text-sm list-decimal pl-5 space-y-2">
+                        <li>Functionality & features</li>
+                        <li>Code quality & Git usage</li>
+                        <li>Design & UX</li>
+                        <li>Originality</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRIZES -->
+        <section id="prizes" class="max-w-6xl mx-auto px-6 py-12">
+            <h3 class="text-2xl font-bold mb-6">Prizes & Opportunities</h3>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="p-6 neon rounded-xl glass text-center">
+                    <div class="text-3xl font-extrabold">₹5k+</div>
+                    <div class="text-slate-300 text-sm mt-1">Prize Pool</div>
+                </div>
+                <div class="p-6 neon rounded-xl glass text-center">
+                    <div class="text-3xl font-extrabold">Internships</div>
+                    <div class="text-slate-300 text-sm mt-1">Opportunities for top teams</div>
+                </div>
+                <div class="p-6 neon rounded-xl glass text-center">
+                    <div class="text-3xl font-extrabold">Zoho Trial</div>
+                    <div class="text-slate-300 text-sm mt-1">Free course trial for winners & best participants</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- WINNERS (placeholder grid) -->
+        <section id="winners" class="max-w-7xl mx-auto px-6 py-12">
+            <h3 class="text-2xl font-bold mb-4">Past Winners & Highlights</h3>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="p-4 neon rounded-lg glass text-center">
+                    <div class="h-28 bg-white/4 rounded mb-3"></div>
+                    <div class="font-semibold">Team Aurora</div>
+                    <div class="text-slate-300 text-xs">SmartCity Dashboard</div>
+                </div>
+                <div class="p-4 neon rounded-lg glass text-center">
+                    <div class="h-28 bg-white/4 rounded mb-3"></div>
+                    <div class="font-semibold">CoderX</div>
+                    <div class="text-slate-300 text-xs">AI Note Taker</div>
+                </div>
+                <div class="p-4 neon rounded-lg glass text-center">
+                    <div class="h-28 bg-white/4 rounded mb-3"></div>
+                    <div class="font-semibold">Team Byte</div>
+                    <div class="text-slate-300 text-xs">Pothole Monitor</div>
+                </div>
+                <div class="p-4 neon rounded-lg glass text-center">
+                    <div class="h-28 bg-white/4 rounded mb-3"></div>
+                    <div class="font-semibold">Innovate</div>
+                    <div class="text-slate-300 text-xs">EcoPark</div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Sponsorship -->
+        <section id="register"
+            class="py-20 bg-gradient-to-b from-slate-900 via-slate-800 to-transparent relative overflow-hidden">
+            <div
+                class="max-w-3xl mx-auto px-6 text-center neon rounded-2xl glass p-10 shadow-2xl relative z-10 backdrop-blur-md">
+
+                <h3
+                    class="text-4xl font-extrabold mb-4 bg-gradient-to-r from-cyan-400 to-indigo-500 bg-clip-text text-transparent">
+                    Ready to Build Something Epic?
+                </h3>
+                <p class="text-slate-300 mb-8 text-lg">
+                    Register your team and gain access to mentors, resources, and race-day support to ship fast and
+                    smart.
+                </p>
+
+                <a href="https://forms.gle/BYTtwW4Fv7UkMG7B9" target="_blank"
+                    class="inline-flex items-center gap-3 px-10 py-3 rounded-full bg-gradient-to-r from-cyan-400 to-indigo-600 text-black font-extrabold shadow-lg hover:scale-105 transition-transform duration-300">
+                    Register Now
+                </a>
+
+                <!-- Sponsor Tag -->
+                <div class="mt-10 flex flex-col items-center gap-2">
+                    <p class="text-slate-400 text-sm uppercase tracking-widest">Sponsored by</p>
+                    <div
+                        class="flex items-center gap-3 bg-white/10 px-6 py-3 rounded-full ring-1 ring-cyan-400/30 shadow-cyan-400/20 shadow-md hover:scale-105 transition-all duration-300">
+                        <img src="https://www.sparksacademy.in/build/assets/logo_small-Cz96xXxd.png"
+                            alt="Sparks Academy Logo" class="w-10 h-10 object-contain" />
+                        <span class="text-white text-lg font-semibold tracking-wide">Sparks Academy</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+
+
+    </main>
+
+    <!-- FLOATING CTA -->
+    <a href="#register" class="float-cta">Register</a>
+
+    <!-- FOOTER -->
+    <footer class="mt-12 py-8 text-center text-slate-400 text-sm">
+        <div>Follow: <span class="text-white font-semibold">Sparkstechnologieschennai</span> • Contact:
+            hello@sparkstech.io</div>
+        <div class="mt-3">© 2025 DEVSPARKS — All rights reserved</div>
+    </footer>
+
+    <!-- SCRIPTS: particles + countdown -->
+    <script>
+        // PARTICLES (lightweight)
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let w, h, particles = [];
+        function resize() { w = canvas.width = innerWidth; h = canvas.height = innerHeight }
+        window.addEventListener('resize', resize); resize();
+
+        function rand(min, max) { return Math.random() * (max - min) + min }
+        function Particle() { this.x = rand(0, w); this.y = rand(0, h); this.vx = rand(-0.3, 0.3); this.vy = rand(-0.6, 0.6); this.r = rand(0.8, 2.6); this.color = ['rgba(124,58,237,0.8)', 'rgba(6,182,212,0.8)', 'rgba(255,0,102,0.8)'][Math.floor(Math.random() * 3)] }
+        for (let i = 0; i < 120; i++)particles.push(new Particle());
+        function loop() { ctx.clearRect(0, 0, w, h); particles.forEach(p => { p.x += p.vx; p.y += p.vy; if (p.x < 0) p.x = w; if (p.x > w) p.x = 0; if (p.y < 0) p.y = h; if (p.y > h) p.y = 0; ctx.beginPath(); ctx.fillStyle = p.color; ctx.globalAlpha = 0.65; ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill(); }); requestAnimationFrame(loop) }
+        loop();
+
+        // COUNTDOWN
+        const countdownEl = document.getElementById('countdown');
+        const eventTime = new Date('2025-11-08T09:00:00').getTime();
+        function updateCountdown() {
+            const now = Date.now();
+            let diff = Math.max(0, eventTime - now);
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            diff -= days * (1000 * 60 * 60 * 24);
+            const hrs = Math.floor(diff / (1000 * 60 * 60)); diff -= hrs * (1000 * 60 * 60);
+            const mins = Math.floor(diff / (1000 * 60)); diff -= mins * (1000 * 60);
+            const secs = Math.floor(diff / 1000);
+            countdownEl.textContent = `${String(days).padStart(2, '0')} : ${String(hrs).padStart(2, '0')} : ${String(mins).padStart(2, '0')} : ${String(secs).padStart(2, '0')}`;
+        }
+        updateCountdown(); setInterval(updateCountdown, 1000);
+    </script>
+
+</body>
+
+</html>
